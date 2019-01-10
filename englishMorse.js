@@ -3,6 +3,15 @@ let fs = require('fs');
 const morse =  fs.readFileSync("./morse.txt", "utf-8").split("\n");
 const alphanumeric =  fs.readFileSync("./alphanumeric.txt", "utf-8").split("\n");
 
+function convertMyString(inputString){
+  if(alphanumeric.indexOf(inputString[0]) > -1){
+    return alphaToMorse(inputString);
+  }
+  else if(morse.indexOf(inputString[0]) > -1){
+    return morseToAlpha(inputString);
+  }
+}
+
 function morseToAlpha(morseString){
   let convertedString = "";
   let morseArray = morseString.split(" / ");
@@ -26,19 +35,17 @@ function morseToAlpha(morseString){
 
 function alphaToMorse(alphaString){
   let convertedString = "";
-  let aplhaArray = alphaString.split(" ");
+  let alphaArray = alphaString.split(" ");
 
   for (let i = 0; i < alphaArray.length; i++){
-    let alphaWord = alphaArray[i].split("");
+    for (let j = 0; j < alphaArray[i].length; j++){
+      let alphaIndex = alphanumeric.indexOf(alphaArray[i][j].toLowerCase());
 
-    for (let j = 0; j < alphaWord.length; j++){
-      let alphaIndex = alphanumeric.indexOf(alphaWord[j]);
-
-      convertedString += morse[engIndex];
+      convertedString += morse[alphaIndex] + " ";
     }
 
-    if(i + 1 !== morseArray.length){
-      convertedString += " ";
+    if(i + 1 !== alphaArray.length){
+      convertedString += "/ ";
     }
   }
 
@@ -46,4 +53,7 @@ function alphaToMorse(alphaString){
 
 }
 
-console.log(morseToAlpha(".... . .-.. .-.. --- / .-- --- .-. .-.. -.."))
+// console.log(morseToAlpha(".... . .-.. .-.. --- / .-- --- .-. .-.. -.."));
+// console.log(alphaToMorse("hello world"));
+// console.log(alphaToMorse("HeLlo WoRld"));
+console.log(convertMyString(".... . .-.. .-.. --- / .-- --- .-. .-.. -.."));
